@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+
+<html lang="pt-br">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Funcionários</title>
+
+</head>
+
+<body>
+
+    <h1>Sistema de Cadastramento de Funcionários</h1>
+
+    <form id="formulario">
+
+        <label for="tipo">Escolha o tipo de funcionário:</label>
+
+        <select id="tipo" required>
+
+            <option value="gerente">Gerente</option>
+
+            <option value="desenvolvedor">Desenvolvedor</option>
+
+        </select><br>
+
+
+
+        <label for="nome">Nome:</label>
+
+        <input type="text" id="nome" required><br>
+
+       
+
+        <label for="idade">Idade:</label>
+
+        <input type="number" id="idade" required><br>
+
+       
+
+        <label for="cargo">Cargo:</label>
+
+        <select id="cargo" required>
+
+            <option value="estagiário">Estagiário</option>
+
+            <option value="auxiliar">Auxiliar</option>
+
+            <option value="assistente">Assistente</option>
+
+            <option value="analista">Analista</option>
+
+            <option value="supervisor">Supervisor</option>
+
+            <option value="coordenador">Coordenador</option>
+
+            <option value="gerente">Gerente</option>
+
+            <option value="diretor">Diretor</option>
+
+        </select><br>        
+
+       
+
+        <label for="departamento">Departamento:</label>
+
+        <input type="text" id="departamento" required><br>
+
+       
+
+        <label for="linguagem">Linguagem de Programação:</label>
+
+        <input type="text" id="linguagem"><br><br>
+
+       
+
+        <button type="submit">Cadastrar</button>
+
+    </form>
+
+
+
+    <h2>Informações do Funcionário Cadastrado</h2>
+
+    <div id="info"></div>
+
+
+
+    <script>
+
+        function exibirErro(mensagem) {
+
+            const erroDiv = document.createElement('div');
+
+            erroDiv.classList.add('erro');
+
+            erroDiv.textContent = mensagem;
+
+            document.body.appendChild(erroDiv);
+
+        }
+
+
+
+        class Funcionario {
+
+            constructor(nome, idade, cargo) {
+
+                this.nome = nome;
+
+                this.idade = idade;
+
+                this.cargo = cargo;
+
+            }
+
+
+
+            seApresentar() {
+
+                return `Olá, meu nome é ${this.nome}, tenho ${this.idade} anos e sou ${this.cargo}.`;
+
+            }
+
+
+
+            trabalhar() {
+
+                return `${this.nome} está trabalhando.`;
+
+            }
+
+        }
+
+
+
+        class Gerente extends Funcionario {
+
+            constructor(nome, idade, cargo, departamento) {
+
+                super(nome, idade, cargo);
+
+                this.departamento = departamento;
+
+            }
+
+
+
+            gerenciar() {
+
+                return `${this.nome} está gerenciando o departamento de(a) ${this.departamento}.`;
+
+            }
+
+        }
+
+
+
+        class Desenvolvedor extends Funcionario {
+
+            constructor(nome, idade, cargo, linguagem) {
+
+                super(nome, idade, cargo);
+
+                this.linguagem = linguagem;
+
+            }
+
+
+
+            programar() {
+
+                return `${this.nome} utiliza a linguagem ${this.linguagem} para programar.`;
+
+            }
+
+        }
+
+
+
+        const formulario = document.getElementById('formulario');
+
+        const infoDiv = document.getElementById('info');
+
+
+
+            formulario.addEventListener('submit', function(event) {
+
+                event.preventDefault();
+
+
+
+                    const tipo = document.getElementById('tipo').value;
+
+                    const nome = document.getElementById('nome').value;
+
+                    const idade = parseInt(document.getElementById('idade').value);
+
+                    const cargo = document.getElementById('cargo').value;
+
+                    const departamento = document.getElementById('departamento').value;
+
+                    const linguagem = document.getElementById('linguagem').value;
+
+
+
+                    try {
+
+                          if (tipo === 'gerente') {
+
+                            const gerente = new Gerente(nome, idade, cargo, departamento);
+
+                            const gerenteInfo = gerente.seApresentar() + '<br>' + gerente.gerenciar();
+
+                            infoDiv.innerHTML = `
+
+                                <h3>Informações do Gerente</h3>
+
+                                <p>${gerenteInfo}</p>`;
+
+                        } else if (tipo === 'desenvolvedor') {
+
+                                const desenvolvedor = new Desenvolvedor(nome, idade, cargo, linguagem);
+
+                                const desenvolvedorInfo = desenvolvedor.seApresentar() + '<br>' + desenvolvedor.programar();
+
+                                infoDiv.innerHTML = `
+
+                                    <h3>Informações do Desenvolvedor</h3>
+
+                                    <p>${desenvolvedorInfo}</p>`;
+
+                            }
+
+                        } catch (error) {
+
+                            exibirErro('Erro ao cadastrar funcionário: ' + error.message);
+
+                }
+
+            }
+
+        );
+
+    </script>
+
+</body>
+
+</html>
